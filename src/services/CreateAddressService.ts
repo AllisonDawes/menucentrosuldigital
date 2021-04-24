@@ -36,6 +36,21 @@ class CreateAddressService {
       throw new AppError("User not found", 401);
     }
 
+    const addressCheckExists = await addressRepository.findOne({
+      where: {
+        road,
+        number,
+        district,
+        city,
+        uf,
+        user: { id: user_id, enterprise: true },
+      },
+    });
+
+    if (addressCheckExists) {
+      throw new AppError("Address already exists in your profile.", 401);
+    }
+
     const address = addressRepository.create({
       user,
       road,

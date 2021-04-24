@@ -5,12 +5,13 @@ import CreateUserService from "../services/CreateUserService";
 
 class EnterpriseController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, email, uf, city, password } = request.body;
+    const { name, category, email, uf, city, password } = request.body;
 
     const createUser = new CreateUserService();
 
     const user = await createUser.execute({
       name,
+      category,
       email,
       uf,
       city,

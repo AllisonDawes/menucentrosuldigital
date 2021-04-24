@@ -11,8 +11,10 @@ const activeAddressController = new ActiveAddressController();
 
 addressRouter.use(ensureAuthenticated);
 
+addressRouter.get("/", addressController.index);
 addressRouter.post("/", addressController.create);
 addressRouter.put("/", addressController.update);
 addressRouter.patch("/active", activeAddressController.update);
+addressRouter.delete("/:address_id", addressController.delete);
 
 export default addressRouter;
