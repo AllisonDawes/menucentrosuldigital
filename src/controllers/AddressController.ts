@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { classToClass } from "class-transformer";
 
 import FindAllAddressUserService from "../services/FindAllAddressUserServices";
+import FindAddressActiveService from "../services/FindAddressActiveService";
 import CreateAddressService from "../services/CreateAddressService";
 import UpdateAddressService from "../services/UpdateAddressService";
 import DeleteAddressService from "../services/DeleteAddressService";
@@ -14,6 +15,20 @@ class AddressController {
 
     const address = await findAllAddressUser.execute({
       user_id,
+    });
+
+    return response.status(201).json(classToClass(address));
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+    const { address_id } = request.params;
+
+    const findAddressActive = new FindAddressActiveService();
+
+    const address = await findAddressActive.execute({
+      user_id,
+      address_id,
     });
 
     return response.status(201).json(classToClass(address));
