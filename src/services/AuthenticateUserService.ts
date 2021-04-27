@@ -37,7 +37,7 @@ class AuthenticateUserService {
 
     const { secret } = authConfig.jwt;
 
-    const token = sign({}, secret, {
+    const token = sign({}, secret!, {
       subject: user.id,
     });
 
