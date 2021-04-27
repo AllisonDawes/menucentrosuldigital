@@ -34,7 +34,7 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   });
 });
 
-const PORT = 3333;
+const PORT = process.env.APP_PORT;
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
