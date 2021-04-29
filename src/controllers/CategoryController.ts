@@ -7,13 +7,9 @@ import DeleteCategoryEnterpriseService from "../services/DeleteCategoryEnterpris
 
 class CategoryController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const admin_id = request.user.id;
-
     const findAllCategoriesEnterprise = new FindAllCategoriesEnterpriseService();
 
-    const category = await findAllCategoriesEnterprise.execute({
-      admin_id,
-    });
+    const category = await findAllCategoriesEnterprise.execute();
 
     return response.status(201).json(category);
   }
