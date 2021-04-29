@@ -40,7 +40,7 @@ class User {
   @Expose({ name: "user_avatar" })
   getAvatar_url(): string | null {
     return this.user_avatar
-      ? `http://192.168.0.105:3333/files/${this.user_avatar}`
+      ? `${process.env.AVATAR_URL}/files/${this.user_avatar}`
       : null;
   }
 
