@@ -28,6 +28,16 @@ class UpdateAddressService {
       throw new AppError("User not found", 401);
     }
 
+    const checkAddressActive = await addressRepository.findOne({
+      where: { active: true, user: { id: user_id } },
+    });
+
+    if (checkAddressActive) {
+      checkAddressActive.active = false;
+
+      await addressRepository.save(checkAddressActive);
+    }
+
     const address = await addressRepository.findOne({
       where: { id: address_id, user: { id: user_id } },
     });

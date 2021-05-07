@@ -23,7 +23,7 @@ class FindAllAddressUserService {
     }
 
     const address = await addressRepository.find({
-      where: { user: { id: user_id } },
+      where: { user: { id: user_id }, active: false },
       relations: ["user"],
     });
 

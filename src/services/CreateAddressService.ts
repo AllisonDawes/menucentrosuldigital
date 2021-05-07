@@ -13,6 +13,7 @@ interface IRequest {
   city: string;
   uf: string;
   phone: string;
+  user?: [];
 }
 
 class CreateAddressService {
@@ -36,6 +37,15 @@ class CreateAddressService {
       throw new AppError("User not found", 401);
     }
 
+    const addressCheckEnterprise = await addressRepository.findOne({
+      where: { city, uf, user: { id: user_id } },
+      relations: ["user"],
+    });
+
+    if (addressCheckEnterprise?.user.enterprise === true) {
+      throw new AppError("Address already use by enterprise.");
+    }
+
     const addressCheckExists = await addressRepository.findOne({
       where: {
         road,
@@ -43,7 +53,7 @@ class CreateAddressService {
         district,
         city,
         uf,
-        user: { id: user_id, enterprise: true },
+        user: { id: user_id },
       },
     });
 

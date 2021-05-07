@@ -7,13 +7,12 @@ class ActiveAddressController {
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
     const { address_id } = request.query;
-    const { active } = request.body;
 
     const updateActiveAddress = new UpdateActiveAddressService();
 
     const address = await updateActiveAddress.execute({
       user_id,
-      active,
+      active: true,
       address_id: String(address_id),
     });
 

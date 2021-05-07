@@ -22,13 +22,11 @@ class AddressController {
 
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { address_id } = request.params;
 
     const findAddressActive = new FindAddressActiveService();
 
     const address = await findAddressActive.execute({
       user_id,
-      address_id,
     });
 
     return response.status(201).json(classToClass(address));

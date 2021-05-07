@@ -7,11 +7,10 @@ import AppError from "../errors/AppError";
 
 interface IRequest {
   user_id: string;
-  address_id: string;
 }
 
 class FindAddressActiveService {
-  public async execute({ user_id, address_id }: IRequest): Promise<Address> {
+  public async execute({ user_id }: IRequest): Promise<Address> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
 
@@ -24,7 +23,7 @@ class FindAddressActiveService {
     }
 
     const address = await addressRepository.findOne({
-      where: { id: address_id, active: true },
+      where: { user: { id: user_id }, active: true },
       relations: ["user"],
     });
 
