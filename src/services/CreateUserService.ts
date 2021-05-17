@@ -29,16 +29,24 @@ class CreateUserService {
   }: IRequest): Promise<User> {
     const userRepository = getRepository(User);
 
-    const checkExists = await userRepository.findOne({
-      where: { name, email, city, enterprise: true },
+    const checkUserExists = await userRepository.findOne({
+      where: { email },
     });
 
-    if (checkExists?.name && checkExists.city) {
+    if (
+      checkUserExists?.name === name &&
+      checkUserExists.city === city &&
+      checkUserExists.enterprise === true
+    ) {
       throw new AppError("Name enterprise already used in the town.", 400);
     }
 
-    if (checkExists?.email) {
+    if (checkUserExists?.email) {
       throw new AppError("E-mail address already used.", 400);
+    }
+
+    if (!password || password.length < 6) {
+      throw new AppError("Password is empty.", 400);
     }
 
     const hashedPassword = await hash(password, 8);
