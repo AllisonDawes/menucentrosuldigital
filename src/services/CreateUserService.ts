@@ -45,6 +45,10 @@ class CreateUserService {
       throw new AppError("E-mail address already used.", 400);
     }
 
+    if (!name) {
+      throw new AppError("Name is empty!", 400);
+    }
+
     if (!password || password.length < 6) {
       throw new AppError("Password is empty.", 400);
     }
