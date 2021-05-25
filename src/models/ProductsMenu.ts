@@ -31,8 +31,8 @@ class ProductsMenu {
   @Column()
   category_product: string;
 
-  @Column("integer")
-  day_disponible: string;
+  @Column()
+  day_week: string;
 
   @Column("boolean")
   active: boolean;

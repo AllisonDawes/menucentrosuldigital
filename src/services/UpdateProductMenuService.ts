@@ -8,23 +8,27 @@ import ProductsMenu from "../models/ProductsMenu";
 
 interface IRequest {
   user_id: string;
+  product_id: string;
   city: string;
   name_product: string;
   description: string;
   price: number;
   category_product: string;
   day_week: string;
+  active: boolean;
 }
 
-class CreateProductMenuService {
+class UpdateProductMenuService {
   public async execute({
     user_id,
+    product_id,
     city,
     name_product,
     description,
     price,
     category_product,
     day_week,
+    active,
   }: IRequest): Promise<ProductsMenu> {
     const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
@@ -40,7 +44,7 @@ class CreateProductMenuService {
 
     const menuExists = await menuRepository.findOne({
       where: { user: user_id },
-      relations: ["user"],
+      relations: ["user", "products_menu"],
     });
 
     if (menuExists?.user.city !== city) {
@@ -51,22 +55,20 @@ class CreateProductMenuService {
       throw new AppError("Menu not found!", 400);
     }
 
-    const productMenuExists = await productsMenuRepository.findOne({
-      where: { name_product, category_product, menu: { id: menuExists.id } },
+    const productMenu = await productsMenuRepository.findOne({
+      where: { id: product_id, menu: { id: menuExists.id } },
     });
 
-    if (productMenuExists) {
-      throw new AppError("Products already is registered!", 400);
+    if (!productMenu) {
+      throw new AppError("Products not found!", 400);
     }
 
-    const productMenu = productsMenuRepository.create({
-      name_product,
-      description,
-      price,
-      category_product,
-      day_week,
-      menu: { id: menuExists.id },
-    });
+    productMenu.name_product = name_product;
+    productMenu.description = description;
+    productMenu.price = price;
+    productMenu.category_product = category_product;
+    productMenu.day_week = day_week;
+    productMenu.active = active;
 
     await productsMenuRepository.save(productMenu);
 
@@ -74,4 +76,4 @@ class CreateProductMenuService {
   }
 }
 
-export default CreateProductMenuService;
+export default UpdateProductMenuService;

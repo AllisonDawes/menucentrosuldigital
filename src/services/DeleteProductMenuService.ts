@@ -8,24 +8,12 @@ import ProductsMenu from "../models/ProductsMenu";
 
 interface IRequest {
   user_id: string;
+  product_id: string;
   city: string;
-  name_product: string;
-  description: string;
-  price: number;
-  category_product: string;
-  day_week: string;
 }
 
-class CreateProductMenuService {
-  public async execute({
-    user_id,
-    city,
-    name_product,
-    description,
-    price,
-    category_product,
-    day_week,
-  }: IRequest): Promise<ProductsMenu> {
+class DeleteProductMenuService {
+  public async execute({ user_id, product_id, city }: IRequest): Promise<void> {
     const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
     const productsMenuRepository = getRepository(ProductsMenu);
@@ -40,7 +28,7 @@ class CreateProductMenuService {
 
     const menuExists = await menuRepository.findOne({
       where: { user: user_id },
-      relations: ["user"],
+      relations: ["user", "products_menu"],
     });
 
     if (menuExists?.user.city !== city) {
@@ -51,27 +39,18 @@ class CreateProductMenuService {
       throw new AppError("Menu not found!", 400);
     }
 
-    const productMenuExists = await productsMenuRepository.findOne({
-      where: { name_product, category_product, menu: { id: menuExists.id } },
+    const productMenu = await productsMenuRepository.findOne({
+      where: { id: product_id, menu: { id: menuExists.id } },
     });
 
-    if (productMenuExists) {
-      throw new AppError("Products already is registered!", 400);
+    if (!productMenu) {
+      throw new AppError("Products not found!", 400);
     }
 
-    const productMenu = productsMenuRepository.create({
-      name_product,
-      description,
-      price,
-      category_product,
-      day_week,
-      menu: { id: menuExists.id },
-    });
+    await productsMenuRepository.remove(productMenu);
 
-    await productsMenuRepository.save(productMenu);
-
-    return productMenu;
+    return;
   }
 }
 
-export default CreateProductMenuService;
+export default DeleteProductMenuService;

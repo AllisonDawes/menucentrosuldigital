@@ -3,21 +3,23 @@ import { classToClass } from "class-transformer";
 
 import CreateProductMenuService from "../services/CreateProductMenuService";
 import FindAllProductsMenuService from "../services/FindAllProductsMenuService";
+import UpdateProductMenuService from "../services/UpdateProductMenuService";
+import DeleteProductMenuService from "../services/DeleteProductMenuService";
 
 class MenuController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { day_disponible, menu_id } = request.query;
+    const { day_week, menu_id } = request.query;
 
     const findAllProductsMenu = new FindAllProductsMenuService();
 
     const productMenu = await findAllProductsMenu.execute({
       user_id,
       menu_id: String(menu_id),
-      day_disponible: String(day_disponible),
+      day_week: String(day_week),
     });
 
-    return response.status(201).json(classToClass(productMenu));
+    return response.status(200).json(classToClass(productMenu));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -28,8 +30,7 @@ class MenuController {
       description,
       price,
       category_product,
-      day_disponible,
-      active,
+      day_week,
     } = request.body;
 
     const createcreateProductsMenu = new CreateProductMenuService();
@@ -41,11 +42,56 @@ class MenuController {
       description,
       price,
       category_product,
-      day_disponible,
-      active,
+      day_week,
     });
 
     return response.status(201).json(classToClass(productMenu));
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+    const { product_id } = request.params;
+    const {
+      city,
+      name_product,
+      description,
+      price,
+      category_product,
+      day_week,
+      active,
+    } = request.body;
+
+    const updateProductMenuService = new UpdateProductMenuService();
+
+    const productMenu = await updateProductMenuService.execute({
+      user_id,
+      product_id,
+      city,
+      name_product,
+      description,
+      price,
+      category_product,
+      day_week,
+      active,
+    });
+
+    return response.status(200).json(classToClass(productMenu));
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+    const { product_id } = request.params;
+    const { city } = request.body;
+
+    const deleteProductMenuService = new DeleteProductMenuService();
+
+    await deleteProductMenuService.execute({
+      user_id,
+      product_id,
+      city,
+    });
+
+    return response.status(200).json();
   }
 }
 

@@ -11,5 +11,7 @@ productsMenuRouter.use(ensureAuthenticated);
 
 productsMenuRouter.get("/", productsMenuController.index);
 productsMenuRouter.post("/", productsMenuController.create);
+productsMenuRouter.put("/:product_id", productsMenuController.update);
+productsMenuRouter.delete("/:product_id", productsMenuController.delete);
 
 export default productsMenuRouter;

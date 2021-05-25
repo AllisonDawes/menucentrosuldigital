@@ -8,14 +8,14 @@ import ProductsMenu from "../models/ProductsMenu";
 interface IRequest {
   user_id: string;
   menu_id: string;
-  day_disponible: string;
+  day_week: string;
 }
 
 class FindAllProductsMenuService {
   public async execute({
     user_id,
     menu_id,
-    day_disponible,
+    day_week,
   }: IRequest): Promise<ProductsMenu[]> {
     const menuRepository = getRepository(Menu);
     const productsMenuRepository = getRepository(ProductsMenu);
@@ -29,7 +29,7 @@ class FindAllProductsMenuService {
     }
 
     const products = await productsMenuRepository.find({
-      where: { menu: { user: { id: user_id }, id: menu_id }, day_disponible },
+      where: { menu: { user: { id: user_id }, id: menu_id }, day_week },
     });
 
     if (!products) {
