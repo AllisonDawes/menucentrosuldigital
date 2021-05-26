@@ -6,13 +6,15 @@ import Menu from "../models/Menu";
 import ProductsMenu from "../models/ProductsMenu";
 
 interface IRequest {
+  user_id: string;
   menu_id: string;
   day_week: string;
   category_product: string;
 }
 
-class FindAllProductsMenuService {
+class FindAllProductsMenuEnterpriseService {
   public async execute({
+    user_id,
     menu_id,
     day_week,
     category_product,
@@ -21,16 +23,17 @@ class FindAllProductsMenuService {
     const productsMenuRepository = getRepository(ProductsMenu);
 
     const menu = await menuRepository.findOne({
-      where: { id: menu_id },
+      where: { user: { id: user_id } },
+      relations: ["user"],
     });
 
-    if (!menu) {
+    if (!menu || menu.user.enterprise === false) {
       throw new AppError("Menu not found!", 400);
     }
 
     const products = await productsMenuRepository.find({
       where: {
-        menu: { id: menu_id },
+        menu: { user: { id: user_id }, id: menu_id },
         day_week,
         category_product,
       },
@@ -44,4 +47,4 @@ class FindAllProductsMenuService {
   }
 }
 
-export default FindAllProductsMenuService;
+export default FindAllProductsMenuEnterpriseService;

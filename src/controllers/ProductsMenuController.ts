@@ -1,22 +1,39 @@
 import { Request, Response } from "express";
 import { classToClass } from "class-transformer";
 
-import CreateProductMenuService from "../services/CreateProductMenuService";
 import FindAllProductsMenuService from "../services/FindAllProductsMenuService";
+import FindAllProductsMenuEnterpriseService from "../services/FindAllProductsMenuEnterpriseService";
+import CreateProductMenuService from "../services/CreateProductMenuService";
 import UpdateProductMenuService from "../services/UpdateProductMenuService";
 import DeleteProductMenuService from "../services/DeleteProductMenuService";
 
 class MenuController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id;
-    const { day_week, menu_id } = request.query;
+    const { day_week, menu_id, category_product } = request.query;
 
     const findAllProductsMenu = new FindAllProductsMenuService();
 
     const productMenu = await findAllProductsMenu.execute({
+      menu_id: String(menu_id),
+      day_week: String(day_week),
+      category_product: String(category_product),
+    });
+
+    return response.status(200).json(classToClass(productMenu));
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+    const { day_week, menu_id, category_product } = request.query;
+
+    const findAllProductsMenuEnterprise =
+      new FindAllProductsMenuEnterpriseService();
+
+    const productMenu = await findAllProductsMenuEnterprise.execute({
       user_id,
       menu_id: String(menu_id),
       day_week: String(day_week),
+      category_product: String(category_product),
     });
 
     return response.status(200).json(classToClass(productMenu));
