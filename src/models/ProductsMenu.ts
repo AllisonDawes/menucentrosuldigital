@@ -32,7 +32,25 @@ class ProductsMenu {
   category_product: string;
 
   @Column()
-  day_week: string;
+  sunday: boolean;
+
+  @Column()
+  monday: boolean;
+
+  @Column()
+  tuesday: boolean;
+
+  @Column()
+  wednesday: boolean;
+
+  @Column()
+  thursday: boolean;
+
+  @Column()
+  friday: boolean;
+
+  @Column()
+  saturday: boolean;
 
   @Column("boolean")
   active: boolean;

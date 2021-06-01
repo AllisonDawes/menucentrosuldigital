@@ -9,13 +9,12 @@ import DeleteProductMenuService from "../services/DeleteProductMenuService";
 
 class MenuController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { day_week, menu_id, category_product } = request.query;
+    const { menu_id, category_product } = request.query;
 
     const findAllProductsMenu = new FindAllProductsMenuService();
 
     const productMenu = await findAllProductsMenu.execute({
       menu_id: String(menu_id),
-      day_week: String(day_week),
       category_product: String(category_product),
     });
 
@@ -24,7 +23,7 @@ class MenuController {
 
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { day_week, menu_id, category_product } = request.query;
+    const { menu_id, category_product } = request.query;
 
     const findAllProductsMenuEnterprise =
       new FindAllProductsMenuEnterpriseService();
@@ -32,7 +31,6 @@ class MenuController {
     const productMenu = await findAllProductsMenuEnterprise.execute({
       user_id,
       menu_id: String(menu_id),
-      day_week: String(day_week),
       category_product: String(category_product),
     });
 
@@ -47,7 +45,13 @@ class MenuController {
       description,
       price,
       category_product,
-      day_week,
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
     } = request.body;
 
     const createcreateProductsMenu = new CreateProductMenuService();
@@ -59,7 +63,13 @@ class MenuController {
       description,
       price,
       category_product,
-      day_week,
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
     });
 
     return response.status(201).json(classToClass(productMenu));
@@ -74,7 +84,13 @@ class MenuController {
       description,
       price,
       category_product,
-      day_week,
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
       active,
     } = request.body;
 
@@ -88,7 +104,13 @@ class MenuController {
       description,
       price,
       category_product,
-      day_week,
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
       active,
     });
 

@@ -14,7 +14,13 @@ interface IRequest {
   description: string;
   price: number;
   category_product: string;
-  day_week: string;
+  sunday: boolean;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
   active: boolean;
 }
 
@@ -27,7 +33,13 @@ class UpdateProductMenuService {
     description,
     price,
     category_product,
-    day_week,
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
     active,
   }: IRequest): Promise<ProductsMenu> {
     const menuRepository = getRepository(Menu);
@@ -67,7 +79,13 @@ class UpdateProductMenuService {
     productMenu.description = description;
     productMenu.price = price;
     productMenu.category_product = category_product;
-    productMenu.day_week = day_week;
+    productMenu.sunday = sunday;
+    productMenu.monday = monday;
+    productMenu.tuesday = tuesday;
+    productMenu.wednesday = wednesday;
+    productMenu.thursday = thursday;
+    productMenu.friday = friday;
+    productMenu.saturday = saturday;
     productMenu.active = active;
 
     await productsMenuRepository.save(productMenu);

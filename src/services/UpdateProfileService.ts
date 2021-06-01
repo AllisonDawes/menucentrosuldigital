@@ -8,6 +8,7 @@ import User from "../models/User";
 interface IRequest {
   profile_id: string;
   name: string;
+  category: string;
   email: string;
   old_password: string;
   password: string;
@@ -17,6 +18,7 @@ class UpdateProfileService {
   public async execute({
     profile_id,
     name,
+    category,
     email,
     old_password,
     password,
@@ -42,6 +44,7 @@ class UpdateProfileService {
     }
 
     profile.name = name;
+    profile.category = category;
     profile.email = email;
 
     if (password && !old_password) {

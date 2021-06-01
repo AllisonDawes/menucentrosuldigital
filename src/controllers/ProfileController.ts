@@ -31,13 +31,14 @@ class ProfileController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const profile_id = request.user.id;
-    const { name, email, old_password, password } = request.body;
+    const { name, category, email, old_password, password } = request.body;
 
     const updateProfile = new UpdateProfileService();
 
     const profile = await updateProfile.execute({
       profile_id,
       name,
+      category,
       email,
       old_password,
       password,

@@ -34,8 +34,32 @@ export default class CreateProductsMenu1620780459056
             type: "varchar",
           },
           {
-            name: "day_week",
-            type: "varchar",
+            name: "sunday",
+            type: "boolean",
+          },
+          {
+            name: "monday",
+            type: "boolean",
+          },
+          {
+            name: "tuesday",
+            type: "boolean",
+          },
+          {
+            name: "wednesday",
+            type: "boolean",
+          },
+          {
+            name: "thursday",
+            type: "boolean",
+          },
+          {
+            name: "friday",
+            type: "boolean",
+          },
+          {
+            name: "saturday",
+            type: "boolean",
           },
           {
             name: "active",

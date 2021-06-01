@@ -13,7 +13,13 @@ interface IRequest {
   description: string;
   price: number;
   category_product: string;
-  day_week: string;
+  sunday: boolean;
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
 }
 
 class CreateProductMenuService {
@@ -24,7 +30,13 @@ class CreateProductMenuService {
     description,
     price,
     category_product,
-    day_week,
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
   }: IRequest): Promise<ProductsMenu> {
     const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
@@ -64,7 +76,13 @@ class CreateProductMenuService {
       description,
       price,
       category_product,
-      day_week,
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
       menu: { id: menuExists.id },
     });
 

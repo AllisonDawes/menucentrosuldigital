@@ -1,4 +1,5 @@
 import { getRepository } from "typeorm";
+import { getDay } from "date-fns";
 
 import AppError from "../errors/AppError";
 
@@ -7,18 +8,18 @@ import ProductsMenu from "../models/ProductsMenu";
 
 interface IRequest {
   menu_id: string;
-  day_week: string;
   category_product: string;
 }
 
 class FindAllProductsMenuService {
   public async execute({
     menu_id,
-    day_week,
     category_product,
-  }: IRequest): Promise<ProductsMenu[]> {
+  }: IRequest): Promise<ProductsMenu[] | undefined> {
     const menuRepository = getRepository(Menu);
     const productsMenuRepository = getRepository(ProductsMenu);
+
+    const day = getDay(new Date());
 
     const menu = await menuRepository.findOne({
       where: { id: menu_id },
@@ -31,16 +32,93 @@ class FindAllProductsMenuService {
     const products = await productsMenuRepository.find({
       where: {
         menu: { id: menu_id },
-        day_week,
         category_product,
       },
     });
 
-    if (!products) {
-      throw new AppError("Products not found", 400);
+    if (day === 0) {
+      const productsToday = products.filter((product) => {
+        return product.sunday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
     }
 
-    return products;
+    if (day === 1) {
+      const productsToday = products.filter((product) => {
+        return product.monday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
+
+    if (day === 2) {
+      const productsToday = products.filter((product) => {
+        return product.tuesday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
+
+    if (day === 3) {
+      const productsToday = products.filter((product) => {
+        return product.wednesday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
+
+    if (day === 4) {
+      const productsToday = products.filter((product) => {
+        return product.thursday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
+
+    if (day === 5) {
+      const productsToday = products.filter((product) => {
+        return product.friday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
+
+    if (day === 6) {
+      const productsToday = products.filter((product) => {
+        return product.saturday === true;
+      });
+
+      if (!productsToday) {
+        throw new AppError("Products not found", 400);
+      }
+
+      return productsToday;
+    }
   }
 }
 

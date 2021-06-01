@@ -1,4 +1,5 @@
 import { getRepository } from "typeorm";
+import { getDay } from "date-fns";
 
 import AppError from "../errors/AppError";
 
@@ -8,7 +9,6 @@ import ProductsMenu from "../models/ProductsMenu";
 interface IRequest {
   user_id: string;
   menu_id: string;
-  day_week: string;
   category_product: string;
 }
 
@@ -16,7 +16,6 @@ class FindAllProductsMenuEnterpriseService {
   public async execute({
     user_id,
     menu_id,
-    day_week,
     category_product,
   }: IRequest): Promise<ProductsMenu[]> {
     const menuRepository = getRepository(Menu);
@@ -34,7 +33,6 @@ class FindAllProductsMenuEnterpriseService {
     const products = await productsMenuRepository.find({
       where: {
         menu: { user: { id: user_id }, id: menu_id },
-        day_week,
         category_product,
       },
     });
