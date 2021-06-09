@@ -3,12 +3,12 @@ import { getRepository } from "typeorm";
 import AppError from "../errors/AppError";
 
 import User from "../models/User";
+import Address from "../models/Address";
 import Menu from "../models/Menu";
 import ProductsMenu from "../models/ProductsMenu";
 
 interface IRequest {
   user_id: string;
-  city: string;
   name_product: string;
   description: string;
   price: number;
@@ -25,7 +25,6 @@ interface IRequest {
 class CreateProductMenuService {
   public async execute({
     user_id,
-    city,
     name_product,
     description,
     price,
@@ -38,10 +37,12 @@ class CreateProductMenuService {
     friday,
     saturday,
   }: IRequest): Promise<ProductsMenu> {
-    const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
+    const addressRepository = getRepository(Address);
+    const menuRepository = getRepository(Menu);
     const productsMenuRepository = getRepository(ProductsMenu);
 
+    //busca usuário logado e do tipo empresa:
     const user = await userRepository.findOne({
       where: { id: user_id, enterprise: true },
     });
@@ -50,19 +51,26 @@ class CreateProductMenuService {
       throw new AppError("User not found!", 400);
     }
 
-    const menuExists = await menuRepository.findOne({
-      where: { user: user_id },
-      relations: ["user"],
+    //busca endereço ativo do usuário:
+    const addressUserActive = await addressRepository.findOne({
+      where: { user: { id: user_id }, active: true },
     });
 
-    if (menuExists?.user.city !== city) {
-      throw new AppError("Menu is not registered in this city!", 400);
+    if (!addressUserActive) {
+      throw new AppError("User not have address active.", 400);
     }
+
+    //busca se usuário contém algum menu cadastrado:
+    const menuExists = await menuRepository.findOne({
+      where: { user: { id: user_id }, address_id: addressUserActive.id },
+      relations: ["user", "address"],
+    });
 
     if (!menuExists) {
       throw new AppError("Menu not found!", 400);
     }
 
+    //verifica se existe algum produto cadatrado com o mesmo nome, categoria e menu_id
     const productMenuExists = await productsMenuRepository.findOne({
       where: { name_product, category_product, menu: { id: menuExists.id } },
     });

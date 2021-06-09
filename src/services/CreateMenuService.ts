@@ -3,18 +3,20 @@ import { getRepository } from "typeorm";
 import AppError from "../errors/AppError";
 
 import User from "../models/User";
+import Address from "../models/Address";
 import Menu from "../models/Menu";
 
 interface IRequest {
   user_id: string;
-  city: string;
 }
 
 class CreateMenuService {
-  public async execute({ user_id, city }: IRequest): Promise<Menu> {
+  public async execute({ user_id }: IRequest): Promise<Menu> {
     const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
+    const addressRepository = getRepository(Address);
 
+    //Verificar se o usuário existe:
     const user = await userRepository.findOne({
       where: { id: user_id, enterprise: true },
     });
@@ -23,17 +25,26 @@ class CreateMenuService {
       throw new AppError("User not found!", 400);
     }
 
-    const menuExists = await menuRepository.findOne({
-      where: { user: user_id },
-      relations: ["user"],
+    const addressExists = await addressRepository.findOne({
+      where: { user: { id: user_id }, active: true },
     });
 
-    if (menuExists?.user.city === city) {
-      throw new AppError("User already has a registered menu in this city");
+    if (!addressExists) {
+      throw new AppError("Address not found.");
+    }
+
+    const menuExists = await menuRepository.findOne({
+      where: { user: { id: user_id, enterprise: true } },
+      relations: ["address"],
+    });
+
+    if (menuExists?.address.city === addressExists.city) {
+      throw new AppError("Menu already registered in the city!", 404);
     }
 
     const menu = menuRepository.create({
-      user: { id: user_id },
+      user_id: user.id,
+      address: { id: addressExists.id },
     });
 
     await menuRepository.save(menu);

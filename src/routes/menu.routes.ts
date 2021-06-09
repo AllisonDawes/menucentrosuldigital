@@ -9,7 +9,8 @@ const menuController = new MenuController();
 
 menuRouter.use(ensureAuthenticated);
 
-menuRouter.get("/:city", menuController.show);
+menuRouter.get("/all_menus", menuController.index);
+menuRouter.get("/", menuController.show);
 menuRouter.post("/", menuController.create);
 menuRouter.delete("/:city", menuController.delete);
 

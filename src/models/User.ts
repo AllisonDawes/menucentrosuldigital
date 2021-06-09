@@ -4,14 +4,22 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 
 import { Exclude, Expose } from "class-transformer";
+
+import Favorites from "./Favorites";
 
 @Entity("users")
 class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
+  @OneToMany(() => Favorites, (favorites) => favorites.user, {
+    cascade: true,
+  })
+  favorites_user: Favorites[];
 
   @Column()
   name: string;

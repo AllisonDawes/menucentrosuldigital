@@ -6,39 +6,27 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from "typeorm";
 
 import User from "./User";
+import Menu from "./Menu";
 
-@Entity("address")
-class Address {
+@Entity("favorites")
+class Favorites {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.favorites_user)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column()
-  road: string;
-
-  @Column()
-  number: string;
-
-  @Column()
-  district: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  uf: string;
-
-  @Column()
-  phone: string;
+  @OneToOne(() => Menu)
+  @JoinColumn({ name: "menu_id" })
+  menu: Menu;
 
   @Column("boolean")
-  active: boolean;
+  favorited: boolean;
 
   @CreateDateColumn()
   created_at: Date;
@@ -47,10 +35,4 @@ class Address {
   updated_at: Date;
 }
 
-export default Address;
-
-/**
- * @ManyToOne(() => Menu)
-  @JoinColumn({ name: "menu_id" })
-  menu: Menu;
- */
+export default Favorites;

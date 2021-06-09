@@ -40,7 +40,6 @@ class MenuController {
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
     const {
-      city,
       name_product,
       description,
       price,
@@ -58,7 +57,6 @@ class MenuController {
 
     const productMenu = await createcreateProductsMenu.execute({
       user_id,
-      city,
       name_product,
       description,
       price,
@@ -79,7 +77,6 @@ class MenuController {
     const user_id = request.user.id;
     const { product_id } = request.params;
     const {
-      city,
       name_product,
       description,
       price,
@@ -99,7 +96,6 @@ class MenuController {
     const productMenu = await updateProductMenuService.execute({
       user_id,
       product_id,
-      city,
       name_product,
       description,
       price,

@@ -9,8 +9,9 @@ import {
   OneToMany,
 } from "typeorm";
 
-import User from "../models/User";
-import ProductsMenu from "../models/ProductsMenu";
+import User from "./User";
+import ProductsMenu from "./ProductsMenu";
+import Address from "./Address";
 
 import { Expose } from "class-transformer";
 
@@ -27,6 +28,16 @@ class Menu {
     cascade: true,
   })
   products_menu: ProductsMenu[];
+
+  @OneToOne(() => Address)
+  @JoinColumn({ name: "address_id" })
+  address: Address;
+
+  @Column()
+  address_id: string;
+
+  @Column()
+  user_id: string;
 
   @Column()
   background_menu_id: string;
