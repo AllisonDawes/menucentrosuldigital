@@ -33,12 +33,16 @@ class CreateMenuService {
       throw new AppError("Address not found.");
     }
 
-    const menuExists = await menuRepository.findOne({
+    const menuExists = await menuRepository.find({
       where: { user: { id: user_id, enterprise: true } },
       relations: ["address"],
     });
 
-    if (menuExists?.address.city === addressExists.city) {
+    const menuExistsAddresActive = menuExists.filter((a) => {
+      return a.address.active === true;
+    });
+
+    if (menuExistsAddresActive.length > 0) {
       throw new AppError("Menu already registered in the city!", 404);
     }
 

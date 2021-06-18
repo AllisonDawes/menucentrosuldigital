@@ -28,8 +28,6 @@ class FindMenuUserService {
       where: { user: { id: user_id }, active: true },
     });
 
-    console.log(addressUserActive);
-
     if (!addressUserActive) {
       throw new AppError("User not have address active.", 400);
     }
