@@ -53,7 +53,11 @@ class UpdateAddressService {
     address.uf = uf;
     address.phone = phone;
 
+    user.uf = uf;
+    user.city = city;
+
     await addressRepository.save(address);
+    await userRepository.save(user);
 
     return address;
   }

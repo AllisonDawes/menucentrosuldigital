@@ -11,7 +11,7 @@ interface IRequest {
 }
 
 class FindMenuUserService {
-  public async execute({ user_id }: IRequest): Promise<Menu> {
+  public async execute({ user_id }: IRequest): Promise<Menu | undefined> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
     const menuRepository = getRepository(Menu);
@@ -39,10 +39,6 @@ class FindMenuUserService {
       },
       relations: ["user", "address"],
     });
-
-    if (!menu) {
-      throw new AppError("Menu not found", 400);
-    }
 
     return menu;
   }

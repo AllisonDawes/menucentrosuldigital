@@ -10,7 +10,7 @@ interface IRequest {
 }
 
 class FindAllAddressUserService {
-  public async execute({ user_id }: IRequest): Promise<Address[]> {
+  public async execute({ user_id }: IRequest): Promise<Address> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
 
@@ -22,8 +22,8 @@ class FindAllAddressUserService {
       throw new AppError("User not fonud.", 401);
     }
 
-    const address = await addressRepository.find({
-      where: { user: { id: user_id }, active: false },
+    const address = await addressRepository.findOne({
+      where: { user: { id: user_id } },
       relations: ["user"],
     });
 

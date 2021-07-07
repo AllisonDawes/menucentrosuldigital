@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import { classToClass } from "class-transformer";
 
-import FindAllMenuCityService from "../services/FindAllMenusCityService";
+import FindMenuClientByCityService from "../services/FindMenuClientByCityService";
 import FindMenuUserService from "../services/FindMenuUserService";
 import CreateMenuService from "../services/CreateMenuService";
 import DeleteMenuUserService from "../services/DeleteMenuUserService";
 
 class MenuController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id;
+    const findMenuClientByCity = new FindMenuClientByCityService();
+    const { city, uf } = request.query;
 
-    const findAllMenuCity = new FindAllMenuCityService();
-
-    const menus = await findAllMenuCity.execute({
-      user_id,
+    const menus = await findMenuClientByCity.execute({
+      city: String(city),
+      uf: String(uf),
     });
 
     return response.status(200).json(classToClass(menus));

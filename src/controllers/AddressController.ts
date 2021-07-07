@@ -5,7 +5,6 @@ import FindAllAddressUserService from "../services/FindAllAddressUserServices";
 import FindAddressActiveService from "../services/FindAddressActiveService";
 import CreateAddressService from "../services/CreateAddressService";
 import UpdateAddressService from "../services/UpdateAddressService";
-import DeleteAddressService from "../services/DeleteAddressService";
 
 class AddressController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -46,6 +45,7 @@ class AddressController {
       city,
       uf,
       phone,
+      active: true,
     });
 
     return response.status(201).json(classToClass(address));
@@ -67,20 +67,6 @@ class AddressController {
       uf,
       phone,
       address_id: String(address_id),
-    });
-
-    return response.status(201).json(classToClass(address));
-  }
-
-  public async delete(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id;
-    const { address_id } = request.params;
-
-    const deleteAddress = new DeleteAddressService();
-
-    const address = await deleteAddress.execute({
-      user_id,
-      address_id: address_id,
     });
 
     return response.status(201).json(classToClass(address));

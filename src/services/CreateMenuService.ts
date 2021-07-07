@@ -25,6 +25,7 @@ class CreateMenuService {
       throw new AppError("User not found!", 400);
     }
 
+    // veriifica o endereço do usuario:
     const addressExists = await addressRepository.findOne({
       where: { user: { id: user_id }, active: true },
     });
@@ -33,6 +34,7 @@ class CreateMenuService {
       throw new AppError("Address not found.");
     }
 
+    // verifica se o usuário tem algum menu cadastrado:
     const menuExists = await menuRepository.find({
       where: { user: { id: user_id, enterprise: true } },
       relations: ["address"],

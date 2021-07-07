@@ -25,10 +25,14 @@ class DeleteMenuUserService {
 
     const menu = await menuRepository.findOne({
       where: { user: user_id },
-      relations: ["user"],
+      relations: ["user", "address"],
     });
 
-    if (menu?.user.city !== city) {
+    if (!menu?.address.active === true) {
+      throw new AppError("Address active is not found!", 400);
+    }
+
+    if (menu?.address.city !== city) {
       throw new AppError("Menu is not registered in this city!", 400);
     }
 

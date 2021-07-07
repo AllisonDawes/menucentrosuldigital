@@ -16,6 +16,5 @@ addressRouter.get("/active", addressController.show);
 addressRouter.post("/", addressController.create);
 addressRouter.put("/", addressController.update);
 addressRouter.patch("/active", activeAddressController.update);
-addressRouter.delete("/:address_id", addressController.delete);
 
 export default addressRouter;

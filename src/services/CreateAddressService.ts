@@ -14,6 +14,7 @@ interface IRequest {
   uf: string;
   phone: string;
   user?: [];
+  active: boolean;
 }
 
 class CreateAddressService {
@@ -25,6 +26,7 @@ class CreateAddressService {
     city,
     uf,
     phone,
+    active,
   }: IRequest): Promise<Address> {
     const addressRepository = getRepository(Address);
     const userRepository = getRepository(User);
@@ -58,7 +60,7 @@ class CreateAddressService {
     });
 
     if (addressCheckExists) {
-      throw new AppError("Address already exists in your profile.", 401);
+      throw new AppError("Address already registered in your profile.", 401);
     }
 
     const address = addressRepository.create({
@@ -69,6 +71,7 @@ class CreateAddressService {
       city,
       uf,
       phone,
+      active,
     });
 
     await addressRepository.save(address);
