@@ -34,6 +34,9 @@ class Menu {
   address: Address;
 
   @Column()
+  name_store: string;
+
+  @Column()
   address_id: string;
 
   @Column()

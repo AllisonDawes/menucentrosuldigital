@@ -33,11 +33,13 @@ class MenuController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
+    const { name_store } = request.body;
 
     const createMenu = new CreateMenuService();
 
     const menu = await createMenu.execute({
       user_id,
+      name_store,
     });
 
     return response.status(201).json(classToClass(menu));

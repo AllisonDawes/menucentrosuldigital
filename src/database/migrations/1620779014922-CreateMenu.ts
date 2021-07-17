@@ -14,6 +14,10 @@ export default class CreateMenu1620779014922 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
+            name: "name_store",
+            type: "varchar",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

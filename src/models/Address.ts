@@ -48,9 +48,3 @@ class Address {
 }
 
 export default Address;
-
-/**
- * @ManyToOne(() => Menu)
-  @JoinColumn({ name: "menu_id" })
-  menu: Menu;
- */

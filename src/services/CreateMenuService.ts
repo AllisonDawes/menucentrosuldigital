@@ -8,10 +8,11 @@ import Menu from "../models/Menu";
 
 interface IRequest {
   user_id: string;
+  name_store: string;
 }
 
 class CreateMenuService {
-  public async execute({ user_id }: IRequest): Promise<Menu> {
+  public async execute({ user_id, name_store }: IRequest): Promise<Menu> {
     const menuRepository = getRepository(Menu);
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
@@ -50,6 +51,7 @@ class CreateMenuService {
 
     const menu = menuRepository.create({
       user_id: user.id,
+      name_store,
       address: { id: addressExists.id },
     });
 
