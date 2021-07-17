@@ -10,10 +10,10 @@ const menuController = new MenuController();
 const menuSearchController = new MenuSearchController();
 
 menuRouter.get("/all_menus/client", menuController.index);
+menuRouter.get("/search_menus", menuSearchController.index);
 
 menuRouter.use(ensureAuthenticated);
 
-menuRouter.get("/search_menus", menuSearchController.index);
 menuRouter.get("/", menuController.show);
 menuRouter.post("/", menuController.create);
 menuRouter.delete("/:city", menuController.delete);
