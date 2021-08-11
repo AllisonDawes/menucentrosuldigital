@@ -10,7 +10,7 @@ interface IRequest {
 }
 
 class FindAddressActiveService {
-  public async execute({ user_id }: IRequest): Promise<Address> {
+  public async execute({ user_id }: IRequest): Promise<Address | undefined> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
 
@@ -27,11 +27,7 @@ class FindAddressActiveService {
       relations: ["user"],
     });
 
-    if (!address) {
-      throw new AppError("Address not found.", 401);
-    }
-
-    return address;
+    return address || undefined;
   }
 }
 

@@ -43,7 +43,17 @@ class Menu {
   user_id: string;
 
   @Column()
+  menu_avatar: string;
+
+  @Column()
   background_menu_id: string;
+
+  @Expose({ name: "menu_avatar" })
+  getMenuAvatar_url(): string | null {
+    return this.menu_avatar
+      ? `${process.env.MENU_AVATAR}/files/${this.menu_avatar}`
+      : null;
+  }
 
   @Expose({ name: "background_menu" })
   getBackground_menu_url(): string | null {

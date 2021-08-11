@@ -9,9 +9,11 @@ import {
 } from "typeorm";
 
 import User from "./User";
+import Menu from "./Menu";
+import Address from "./Address";
 
-@Entity("address")
-class Address {
+@Entity("favorites")
+class Favorite {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -19,29 +21,28 @@ class Address {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column()
-  road: string;
+  @ManyToOne(() => Menu)
+  @JoinColumn({ name: "menu_id" })
+  menu: Menu;
+
+  @ManyToOne(() => Address)
+  @JoinColumn({ name: "address_id" })
+  address: Address;
 
   @Column()
-  number: string;
-
-  @Column()
-  district: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  uf: string;
-
-  @Column()
-  phone: string;
-
-  @Column("boolean")
-  active: boolean;
+  name_store: string;
 
   @Column()
   user_id: string;
+
+  @Column()
+  menu_id: string;
+
+  @Column()
+  address_id: string;
+
+  @Column("boolean")
+  favorited: boolean;
 
   @CreateDateColumn()
   created_at: Date;
@@ -50,4 +51,4 @@ class Address {
   updated_at: Date;
 }
 
-export default Address;
+export default Favorite;

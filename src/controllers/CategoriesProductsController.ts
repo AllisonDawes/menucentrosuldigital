@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { classToClass } from "class-transformer";
 
 import CreateCategoryProductService from "../services/CreateCategoryProductService";
 import FindAllCategoriesProductsService from "../services/FindAllCategoriesProductsService";
@@ -11,7 +12,7 @@ class CategoriesProductsController {
 
     const category = await findAllCategoriesProducts.execute();
 
-    return response.status(200).json(category);
+    return response.status(200).json(classToClass(category));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

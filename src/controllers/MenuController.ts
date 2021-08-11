@@ -5,6 +5,7 @@ import FindMenuClientByCityService from "../services/FindMenuClientByCityService
 import FindMenuUserService from "../services/FindMenuUserService";
 import CreateMenuService from "../services/CreateMenuService";
 import DeleteMenuUserService from "../services/DeleteMenuUserService";
+import UpdateMenuAvatarService from "../services/UpdateMenuAvatarService";
 
 class MenuController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -43,6 +44,19 @@ class MenuController {
     });
 
     return response.status(201).json(classToClass(menu));
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { menu_id } = request.params;
+
+    const updateMenuAvatar = new UpdateMenuAvatarService();
+
+    const menu = await updateMenuAvatar.execute({
+      menu_id,
+      avatarFileName: request.file.filename,
+    });
+
+    return response.status(200).json(classToClass(menu));
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
