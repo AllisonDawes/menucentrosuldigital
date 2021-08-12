@@ -9,3 +9,6 @@ yarn-error.log
 
 tmp/*
 !tmp/.gitkeep
+
+categories/*
+!categories/.gitkeep
