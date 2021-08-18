@@ -7,8 +7,8 @@ ormconfig.json
 yarn.lock
 yarn-error.log
 
-tmp/*
-!tmp/.gitkeep
-
 categories/*
 !categories/.gitkeep
+
+tmp/*
+!tmp/.gitkeep

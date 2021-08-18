@@ -3,6 +3,7 @@ import { classToClass } from "class-transformer";
 
 import CreateUserService from "../services/CreateUserService";
 import UpdateUserAvatarService from "../services/UpdateUserAvatarService";
+import DeleteAvatarUserProfileService from "../services/DaleteAvatarUserProfileService";
 
 class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {

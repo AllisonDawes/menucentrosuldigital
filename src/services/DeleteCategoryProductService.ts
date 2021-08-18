@@ -1,6 +1,9 @@
 import { getRepository } from "typeorm";
+import path from "path";
+import fs from "fs";
 
 import AppError from "../errors/AppError";
+import uploadConfigCategories from "../config/uploadCategories";
 
 import User from "../models/User";
 import CategoryProduct from "../models/CategoryProduct";
@@ -32,6 +35,21 @@ class DeleteCategoryProductService {
 
     if (!category) {
       throw new AppError("Category Product is not found!", 400);
+    }
+
+    if (category.category_avatar) {
+      const categoryAvatarFilePath = path.join(
+        uploadConfigCategories.directory,
+        category.category_avatar
+      );
+
+      const categoryAvatarFileExists = await fs.promises.stat(
+        categoryAvatarFilePath
+      );
+
+      if (categoryAvatarFileExists) {
+        await fs.promises.unlink(categoryAvatarFilePath);
+      }
     }
 
     await categoryProductRepository.remove(category);
