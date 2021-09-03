@@ -1,5 +1,4 @@
 import { getRepository } from "typeorm";
-import { getDay } from "date-fns";
 
 import AppError from "../errors/AppError";
 

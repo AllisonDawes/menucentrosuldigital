@@ -10,6 +10,7 @@ import menuRouter from "./menu.routes";
 import productsMenuRouter from "./productsMenu.routes";
 import categoryProductRouter from "./categoryProduct.routes";
 import favoriteRouter from "./favorites.routes";
+import categoryProductsMenu from "./categoryProductsMenu.routes";
 
 const routes = Router();
 
@@ -23,5 +24,6 @@ routes.use("/menus", menuRouter);
 routes.use("/products_menu", productsMenuRouter);
 routes.use("/categories_products", categoryProductRouter);
 routes.use("/favorites", favoriteRouter);
+routes.use("/categories_products_menu", categoryProductsMenu);
 
 export default routes;

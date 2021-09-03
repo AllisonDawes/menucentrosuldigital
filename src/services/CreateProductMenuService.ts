@@ -6,6 +6,7 @@ import User from "../models/User";
 import Address from "../models/Address";
 import Menu from "../models/Menu";
 import ProductsMenu from "../models/ProductsMenu";
+import CategoryProductsMenus from "../models/CategoryProductsMenus";
 
 interface IRequest {
   user_id: string;
@@ -20,6 +21,7 @@ interface IRequest {
   thursday: boolean;
   friday: boolean;
   saturday: boolean;
+  name_category: string;
 }
 
 class CreateProductMenuService {
@@ -36,11 +38,15 @@ class CreateProductMenuService {
     thursday,
     friday,
     saturday,
+    name_category,
   }: IRequest): Promise<ProductsMenu> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
     const menuRepository = getRepository(Menu);
     const productsMenuRepository = getRepository(ProductsMenu);
+    const categoryProductsMenusReporitory = getRepository(
+      CategoryProductsMenus
+    );
 
     //busca usuário logado e do tipo empresa:
     const user = await userRepository.findOne({
@@ -52,17 +58,17 @@ class CreateProductMenuService {
     }
 
     //busca endereço ativo do usuário:
-    const addressUserActive = await addressRepository.findOne({
-      where: { user: { id: user_id }, active: true },
+    const addressEnterprise = await addressRepository.findOne({
+      where: { user: { id: user_id } },
     });
 
-    if (!addressUserActive) {
+    if (!addressEnterprise) {
       throw new AppError("User not have address active.", 400);
     }
 
     //busca se usuário contém algum menu cadastrado:
     const menuExists = await menuRepository.findOne({
-      where: { user: { id: user_id }, address_id: addressUserActive.id },
+      where: { user: { id: user_id }, address_id: addressEnterprise.id },
       relations: ["user", "address"],
     });
 
@@ -77,6 +83,16 @@ class CreateProductMenuService {
 
     if (productMenuExists) {
       throw new AppError("Products already is registered!", 400);
+    }
+
+    const categoryProductsMenus = await categoryProductsMenusReporitory.findOne(
+      {
+        where: { name_category },
+      }
+    );
+
+    if (!categoryProductsMenus) {
+      throw new AppError("Category product is not found!", 400);
     }
 
     const productMenu = productsMenuRepository.create({

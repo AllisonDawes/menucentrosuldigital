@@ -12,6 +12,7 @@ import {
 import User from "./User";
 import ProductsMenu from "./ProductsMenu";
 import Address from "./Address";
+import CategoryProductsMenus from "./CategoryProductsMenus";
 
 import { Expose } from "class-transformer";
 
@@ -28,6 +29,15 @@ class Menu {
     cascade: true,
   })
   products_menu: ProductsMenu[];
+
+  @OneToMany(
+    () => CategoryProductsMenus,
+    (category_Products_menus) => category_Products_menus.menu,
+    {
+      cascade: true,
+    }
+  )
+  category_products_menu: CategoryProductsMenus[];
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "address_id" })
