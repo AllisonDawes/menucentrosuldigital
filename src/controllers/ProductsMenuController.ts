@@ -51,11 +51,12 @@ class MenuController {
       thursday,
       friday,
       saturday,
+      name_category,
     } = request.body;
 
-    const createcreateProductsMenu = new CreateProductMenuService();
+    const createProductsMenu = new CreateProductMenuService();
 
-    const productMenu = await createcreateProductsMenu.execute({
+    const productMenu = await createProductsMenu.execute({
       user_id,
       name_product,
       description,
@@ -68,6 +69,7 @@ class MenuController {
       thursday,
       friday,
       saturday,
+      name_category,
     });
 
     return response.status(201).json(classToClass(productMenu));
