@@ -17,7 +17,7 @@ class CreateProductByCategoryMenuService {
     name_category,
     menu_id,
     user_id,
-  }: IRequest): Promise<CategoryProductsMenus> {
+  }: IRequest): Promise<CategoryProductsMenus | undefined> {
     const menuRepository = getRepository(Menu);
     const categoryProductsRepository = getRepository(CategoryProduct);
     const categoryProductsMenusRepository = getRepository(
@@ -45,20 +45,20 @@ class CreateProductByCategoryMenuService {
         where: { name_category },
       });
 
-    if (findCategoryProductsMenu) {
-      throw new AppError("Category already exists!", 400);
+    if (!findCategoryProductsMenu) {
+      const categoryProductsMenus = categoryProductsMenusRepository.create({
+        name_category,
+        category_avatar: categoriesProducts.category_avatar,
+        category_id: categoriesProducts.id,
+        menu_id: menu.id,
+      });
+
+      await categoryProductsMenusRepository.save(categoryProductsMenus);
+
+      return categoryProductsMenus;
     }
 
-    const categoryProductsMenus = categoryProductsMenusRepository.create({
-      name_category,
-      category_avatar: categoriesProducts.category_avatar,
-      category_id: categoriesProducts.id,
-      menu_id,
-    });
-
-    await categoryProductsMenusRepository.save(categoryProductsMenus);
-
-    return categoryProductsMenus;
+    return;
   }
 }
 

@@ -21,7 +21,6 @@ interface IRequest {
   thursday: boolean;
   friday: boolean;
   saturday: boolean;
-  name_category: string;
 }
 
 class CreateProductMenuService {
@@ -38,7 +37,6 @@ class CreateProductMenuService {
     thursday,
     friday,
     saturday,
-    name_category,
   }: IRequest): Promise<ProductsMenu> {
     const userRepository = getRepository(User);
     const addressRepository = getRepository(Address);
@@ -87,7 +85,7 @@ class CreateProductMenuService {
 
     const categoryProductsMenus = await categoryProductsMenusReporitory.findOne(
       {
-        where: { name_category },
+        where: { name_category: category_product },
       }
     );
 
@@ -98,7 +96,7 @@ class CreateProductMenuService {
     const productMenu = productsMenuRepository.create({
       name_product,
       description,
-      price,
+      price: Number(price),
       category_product,
       sunday,
       monday,
@@ -107,7 +105,8 @@ class CreateProductMenuService {
       thursday,
       friday,
       saturday,
-      menu: { id: menuExists.id },
+      menu_id: menuExists.id,
+      category_products_menus_id: categoryProductsMenus.id,
     });
 
     await productsMenuRepository.save(productMenu);

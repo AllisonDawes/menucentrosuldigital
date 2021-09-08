@@ -51,7 +51,6 @@ class MenuController {
       thursday,
       friday,
       saturday,
-      name_category,
     } = request.body;
 
     const createProductsMenu = new CreateProductMenuService();
@@ -69,7 +68,6 @@ class MenuController {
       thursday,
       friday,
       saturday,
-      name_category,
     });
 
     return response.status(201).json(classToClass(productMenu));

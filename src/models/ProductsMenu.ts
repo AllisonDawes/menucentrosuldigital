@@ -66,6 +66,9 @@ class ProductsMenu {
   active: boolean;
 
   @Column()
+  menu_id: string;
+
+  @Column()
   product_avatar: string;
 
   @Column()
