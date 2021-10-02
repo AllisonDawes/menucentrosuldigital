@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import FindOpenCloseByMenuService from "../services/FindOpenCloseByMenuService";
 import CreateHourOpenCloseMenuService from "../services/CreateHourOpenCloseMenuService";
+import DeleteOpenCloseMenuService from "../services/DeleteOpenCloseMenuService";
 
 class MenuOpenCloseController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -31,6 +32,18 @@ class MenuOpenCloseController {
     });
 
     return response.status(201).json(menuOpenClose);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const deleteOpenCloseMenu = new DeleteOpenCloseMenuService();
+
+    await deleteOpenCloseMenu.execute({
+      user_id,
+    });
+
+    return response.status(200).json();
   }
 }
 

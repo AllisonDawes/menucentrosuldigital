@@ -12,5 +12,6 @@ menuOpenCloseRouter.get("/", menuOpenCloseController.show);
 menuOpenCloseRouter.use(ensureAuthenticated);
 
 menuOpenCloseRouter.post("/", menuOpenCloseController.create);
+menuOpenCloseRouter.delete("/", menuOpenCloseController.delete);
 
 export default menuOpenCloseRouter;
