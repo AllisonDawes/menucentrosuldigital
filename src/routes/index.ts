@@ -11,6 +11,7 @@ import productsMenuRouter from "./productsMenu.routes";
 import categoryProductRouter from "./categoryProduct.routes";
 import favoriteRouter from "./favorites.routes";
 import categoryProductsMenu from "./categoryProductsMenu.routes";
+import menuOpenCloseRouter from "./menuOpenClose.routes";
 
 const routes = Router();
 
@@ -25,5 +26,6 @@ routes.use("/products_menu", productsMenuRouter);
 routes.use("/categories_products", categoryProductRouter);
 routes.use("/favorites", favoriteRouter);
 routes.use("/categories_products_menu", categoryProductsMenu);
+routes.use("/menu_open_closes", menuOpenCloseRouter);
 
 export default routes;

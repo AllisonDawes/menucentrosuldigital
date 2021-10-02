@@ -46,6 +46,12 @@ class Menu {
   @Column()
   name_store: string;
 
+  @Column("boolean")
+  active: boolean;
+
+  @Column("boolean")
+  blocked: boolean;
+
   @Column()
   address_id: string;
 

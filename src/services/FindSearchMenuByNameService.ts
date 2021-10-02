@@ -13,7 +13,7 @@ class FindMenuByNameService {
     const menuRepository = getRepository(Menu);
 
     const menusSearch = await menuRepository.find({
-      where: { name_store: ILike(`%${name_store}%`) },
+      where: { name_store: ILike(`%${name_store}%`), active: true },
       relations: ["user", "address"],
       order: { name_store: "ASC" },
     });

@@ -75,13 +75,17 @@ class CreateProductMenuService {
     }
 
     //verifica se existe algum produto cadatrado com o mesmo nome, categoria e menu_id
-    const productMenuExists = await productsMenuRepository.findOne({
+    const productMenuExistsByName = await productsMenuRepository.findOne({
       where: { name_product, category_product, menu: { id: menuExists.id } },
     });
 
-    if (productMenuExists) {
+    if (productMenuExistsByName) {
       throw new AppError("Products already is registered!", 400);
     }
+
+    const findProductMenu = await productsMenuRepository.find({
+      where: { menu_id: menuExists.id },
+    });
 
     const categoryProductsMenus = await categoryProductsMenusReporitory.findOne(
       {
@@ -108,6 +112,12 @@ class CreateProductMenuService {
       menu_id: menuExists.id,
       category_products_menus_id: categoryProductsMenus.id,
     });
+
+    if (findProductMenu.length < 1) {
+      menuExists.active = true;
+
+      await menuRepository.save(menuExists);
+    }
 
     await productsMenuRepository.save(productMenu);
 
